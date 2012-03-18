@@ -1,0 +1,19 @@
+.enyoGoogle-mapMarker,
+.enyoGoogle-mapMarker-shadow {
+    background: transparent url("../../images/marker_sprite.png") 0 0 no-repeat;
+    border: 0 none;
+    height: 34px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+}
+
+.enyoGoogle-mapMarker {
+    cursor: pointer;
+    width: 20px;
+}
+
+.enyoGoogle-mapMarker-shadow {
+    background-position-x: -19px;
+    width: 36px;
+}
