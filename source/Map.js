@@ -43,7 +43,6 @@ enyo.kind({
          */
         credentials: "",
         degradedMode: false,
-        forceDegradedMode: false,
         sensor: false
     },
     //* @protected
@@ -74,24 +73,13 @@ enyo.kind({
 
         enyo.mixin(props, this.options);
         this.map = new google.maps.Map(this.hasNode(), props);
-        this.mapEntities = [];
-        this.detectFeatures();
-    },
-    detectFeatures: function () {
-        enyoGoogle.Map.degradedMode = true;
-
-        if (enyoGoogle.Map.forceDegradedMode) return;
-
-        // IF the platform support Google maps's event detach all custom handlers.
-        google.maps.event.addListenerOnce(this.map, "idle", enyo.bind(this, function () {
-            enyoGoogle.Map.degradedMode = false;
-        }));
     },
     mousedownHandler: function (inSender, inEvent) {
         if (!enyoGoogle.Map.degradedMode) return;
         this.mouseClientX = inEvent.clientX;
         this.mouseClientY = inEvent.clientY;
         this.dragingMap = true;
+        return true;
     },
     mousemoveHandler: function (inSender, inEvent) {
         if (!enyoGoogle.Map.degradedMode) return;
@@ -100,15 +88,19 @@ enyo.kind({
                            this.mouseClientY - inEvent.clientY);
             this.mouseClientX = inEvent.clientX;
             this.mouseClientY = inEvent.clientY;
+            return true;
         }
+        return false;
     },
     mouseupHandler: function (inSender, inEvent) {
         if (!enyoGoogle.Map.degradedMode) return;
         this.dragingMap = false;
+        return true;
     },
     dblclickHandler: function (inSender, inEvent) {
         if (!enyoGoogle.Map.degradedMode) return;
         this.setZoom(this.getZoom() + 1);
+        return true;
     },
     destroyMap: function () {
         this.map = null;
@@ -122,10 +114,8 @@ enyo.kind({
             return;
         }
 
-        setTimeout(enyo.bind(this, function () {
-            this.showMarkerChanged();
-            this.doLoaded();
-        }), 1000);
+        this.showMarkerChanged();
+        this.doLoaded();
     },
     //* @public
     /**
