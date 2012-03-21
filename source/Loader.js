@@ -21,12 +21,13 @@ enyo.kind({
             }
         },
         addScript: function () {
-            var script = document.createElement("script");
+            var firstScript = document.getElementsByTagName("script")[0],
+                script = document.createElement("script");
             script.onload = function () {
                 enyoGoogle.Loader.scriptLoaded();
             };
             script.src = "https://www.google.com/jsapi";
-            document.body.appendChild(script);
+            firstScript.parentNode.insertBefore(script, firstScript);
         },
         scriptLoaded: function () {
             var i, c;

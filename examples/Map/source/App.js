@@ -11,6 +11,7 @@ enyo.kind({
             kind: "enyoGoogle.Map",
             flex: 1,
             showMarker: true,
+            showTraffic: true,
             zoom: 8,
             onLoaded: "mapLoaded",
             onLoadFailure: "mapLoadFailure",

@@ -115,6 +115,7 @@ enyo.kind({
         }
 
         this.showMarkerChanged();
+        this.showTrafficChanged();
         this.doLoaded();
     },
     //* @public
@@ -133,6 +134,11 @@ enyo.kind({
     clearAll: function (inExcludes) {
         var markers = this.getComponents(),
             destroy, i, j;
+            
+        if (this.trafficTileLayer) {
+            this.trafficTileLayer.setMap(null);
+            this.trafficTileLayer = null;
+        }
             
         for (i = 0; i < markers.length; i++) {
             if (markers[i] === this.$.marker) continue;
@@ -215,7 +221,6 @@ enyo.kind({
         if (this.showTraffic) {
             this.trafficTileLayer = new google.maps.TrafficLayer();
             this.trafficTileLayer.setMap(this.map);
-            this.mapEntities.push(this.trafficTileLayer);
         }
     },
     //* @public
