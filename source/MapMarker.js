@@ -16,6 +16,9 @@ enyo.kind({
     },
     statics: {
         initialize: function () {
+            var xDelta = -10, // The delta from the marker to the left border of the image.
+                yDelta = -34; // The delta from the bottom of the image to the top.
+                
             if (enyoGoogle.DegradedMapMarker) return;
 
             enyoGoogle.DegradedMapMarker = function (options) {
@@ -48,8 +51,8 @@ enyo.kind({
                 //div.appendChild(img);
 
                 panes = this.getPanes();
-                panes.floatPane.appendChild(div);
-                panes.overlayLayer.appendChild(divShadown);
+                panes.overlayMouseTarget.appendChild(div);
+                panes.overlayShadow.appendChild(divShadown);
             };
 
             enyoGoogle.DegradedMapMarker.prototype.draw = function () {
@@ -59,10 +62,10 @@ enyo.kind({
                     divPixel = overlayProjection.fromLatLngToDivPixel(this.position_);
                 
                 div.style.left =
-                divShadown.style.left = divPixel.x - 10 + "px";
+                divShadown.style.left = divPixel.x + xDelta + "px";
 
                 div.style.top =
-                divShadown.style.top = divPixel.y - 34 + "px";
+                divShadown.style.top = divPixel.y + yDelta + "px";
             };
 
             enyoGoogle.DegradedMapMarker.prototype.onRemove = function () {
@@ -83,6 +86,11 @@ enyo.kind({
             enyoGoogle.DegradedMapMarker.prototype.setPosition = function (position) {
                 this.position_ = position;
                 this.draw();
+            };
+            
+            // This method is called when an infoWindow is open with the marker.
+            enyoGoogle.DegradedMapMarker.prototype.getAnchorPoint = function () {
+                return new google.maps.Point(0, yDelta);
             };
 
             enyoGoogle.DegradedMapMarker.prototype.setOptions = function (options) {
